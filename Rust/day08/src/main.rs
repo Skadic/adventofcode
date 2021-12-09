@@ -32,12 +32,11 @@ fn main() {
         result
             .iter()
             .flat_map(|arr| arr.iter())
-            .cloned()
             .filter(|digit| [1, 4, 7, 8].contains(digit))
             .count()
     );
     println!(
-        "Part 1: {}",
+        "Part 2: {}",
         result
             .iter()
             .map(|arr| arr
