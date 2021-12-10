@@ -61,13 +61,7 @@ fn part2(sequences: &[&str]) -> usize {
             stack
                 .into_iter()
                 .rev()
-                .map(|c| match c {
-                    ')' => 1,
-                    ']' => 2,
-                    '}' => 3,
-                    '>' => 4,
-                    _ => panic!("Invalid bracket: {}", c),
-                })
+                .map(|c| ")]}>".chars().position(|c2| c == c2).unwrap() + 1)
                 .fold(0, |score, value| score * 5 + value),
         );
     }
