@@ -24,37 +24,21 @@ impl Grid {
             .collect()
     }
 
-    fn visible_in_direction(&self, x_pos: usize, y_pos: usize, dir: Direction) -> bool {
-        let w = self.width();
-        let h = self.height();
-        let tree_height = self[y_pos][x_pos];
-        || -> Box<dyn Iterator<Item = _>> {
-            match dir {
-                Left => Box::new((0..x_pos).zip(std::iter::repeat(y_pos))),
-                Right => Box::new((x_pos + 1..w).zip(std::iter::repeat(y_pos))),
-                Up => Box::new(std::iter::repeat(x_pos).zip(0..y_pos)),
-                Down => Box::new(std::iter::repeat(x_pos).zip(y_pos + 1..h)),
-            }
-        }()
-        .map(|(x, y)| self[y][x])
-        .all(|height| height < tree_height)
+    fn visible_in_direction(&self, x: usize, y: usize, dir: Direction) -> bool {
+        let tree_height = self[y][x];
+        self.view(x, y, dir)
+            .map(|(x, y)| self[y][x])
+            .all(|height| height < tree_height)
     }
 
     fn view_distance_in_direction(&self, x: usize, y: usize, dir: Direction) -> usize {
         let w = self.width();
         let h = self.height();
         let tree_height = self[y][x];
-        if let Some(distance) = || -> Box<dyn Iterator<Item = _>> {
-            match dir {
-                Left => Box::new((0..x).rev().zip(std::iter::repeat(y))),
-                Right => Box::new((x + 1..w).zip(std::iter::repeat(y))),
-                Up => Box::new(std::iter::repeat(x).zip((0..y).rev())),
-                Down => Box::new(std::iter::repeat(x).zip(y + 1..h)),
-            }
-        }()
-        .enumerate()
-        .map(|(i, (x, y))| (i, self[y][x]))
-        .position(|(i, height)| height >= tree_height)
+        if let Some(distance) = self
+            .view(x, y, dir)
+            .map(|(x, y)| self[y][x])
+            .position(|height| height >= tree_height)
         {
             return distance + 1;
         };
@@ -65,6 +49,19 @@ impl Grid {
             Up => y,
             Down => h - y - 1,
         }
+    }
+
+    fn view(&self, x: usize, y: usize, dir: Direction) -> Box<dyn Iterator<Item = (usize, usize)>> {
+        let w = self.width();
+        let h = self.height();
+        || -> Box<dyn Iterator<Item = _>> {
+            match dir {
+                Left => Box::new((0..x).rev().zip(std::iter::repeat(y))),
+                Right => Box::new((x + 1..w).zip(std::iter::repeat(y))),
+                Up => Box::new(std::iter::repeat(x).zip((0..y).rev())),
+                Down => Box::new(std::iter::repeat(x).zip(y + 1..h)),
+            }
+        }()
     }
 
     fn scenic_score(&self, x: usize, y: usize) -> usize {
