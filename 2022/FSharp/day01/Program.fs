@@ -1,6 +1,6 @@
 ﻿let readLines filePath = System.IO.File.ReadLines(filePath)
 
-let splitInput lines: string list list =
+let splitInput lines : string list list =
     match lines with
     | [] -> []
     | lines ->
@@ -9,7 +9,7 @@ let splitInput lines: string list list =
             | [] -> [ acc ]
             | "" :: rest -> acc :: (splitInputInternal rest [])
             | x :: rest -> splitInputInternal rest (x :: acc)
-        
+
         splitInputInternal lines []
 
 
@@ -33,5 +33,5 @@ let part2 =
     |> Seq.take 3
     |> Seq.sum
 
-printfn "Part 1: %d" part1 
-printfn "Part 2: %d" part2 
+printfn "Part 1: %d" part1
+printfn "Part 2: %d" part2
