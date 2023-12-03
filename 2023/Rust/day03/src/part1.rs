@@ -5,7 +5,7 @@ fn main() {
     let input = parse_input(&input);
 
     println!(
-        "{:?},",
+        "part 1: {:?},",
         find_numbers(input.as_slice()).into_iter().sum::<usize>()
     )
 }

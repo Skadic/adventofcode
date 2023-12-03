@@ -91,8 +91,6 @@ pub fn gear_ratio(input: &[Vec<Entry>], row: usize, col: usize) -> usize {
     let start_x = col.saturating_sub(1);
     let end_x = (col + 1).min(input[row].len() - 1);
 
-    dbg!(row, col);
-
     let mut n1 = None;
     let mut n2 = None;
     for y in start_y..=end_y {
