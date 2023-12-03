@@ -29,8 +29,6 @@ pub fn snafu(mut n: isize) -> String {
         i -= 1;
     }
 
-    dbg!(&factors);
-
     let mut carry = false;
     for factor in factors.into_iter().rev() {
         match factor {
