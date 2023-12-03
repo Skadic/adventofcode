@@ -16,29 +16,24 @@ pub fn de_snafu(num_str: &str) -> isize {
         })
 }
 
-pub fn snafu(mut n: isize) -> String {
+pub fn snafu(n: isize) -> String {
+    let mut n = n as usize;
     let mut snafu = String::new();
     let mut factors = vec![];
     let mut i = 20;
     while i >= 0 {
-        let factor = n / 5isize.pow(i as u32);
+        let factor = n / 5usize.pow(i as u32);
         if !factors.is_empty() || factor > 0 {
             factors.push(factor);
         }
-        n = n % 5isize.pow(i as u32);
+        n = n % 5usize.pow(i as u32);
         i -= 1;
     }
 
+    let digits = ['0', '1', '2', '=', '-'];
     let mut carry = false;
     for factor in factors.into_iter().rev() {
-        match factor {
-            0 => snafu.push(if carry { '1' } else { '0' }),
-            1 => snafu.push(if carry { '2' } else { '1' }),
-            2 => snafu.push(if carry { '=' } else { '2' }),
-            3 => snafu.push(if carry { '-' } else { '=' }),
-            4 => snafu.push(if carry { '0' } else { '-' }),
-            _ => panic!(),
-        }
+        snafu.push(digits[(factor as usize + carry as usize) % 5]);
         carry = factor >= 3 || carry && factor >= 2;
     }
     if carry {
