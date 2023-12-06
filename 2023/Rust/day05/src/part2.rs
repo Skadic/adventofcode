@@ -24,6 +24,6 @@ pub fn process() -> miette::Result<()> {
 #[cfg(test)]
 #[test]
 fn part2() -> miette::Result<()> {
-    tracing_subscriber::fmt().compact().init();
+    tracing_subscriber::fmt().compact().without_time().init();
     process()
 }
