@@ -1,9 +1,10 @@
-use day05::parse_input;
+use tracing::info;
 
-fn main() {
-    let input = std::fs::read_to_string("../../inputs/day05/input.txt").unwrap();
+use crate::{parse_input, INPUT};
 
-    let (seeds, input) = parse_input(&input);
+#[tracing::instrument(name="part2", parent=None)]
+pub fn process() -> miette::Result<()> {
+    let (seeds, input) = parse_input(INPUT);
     let seeds = seeds
         .chunks_exact(2)
         .map(|s| s[0]..=s[0] + s[1] - 1)
@@ -16,5 +17,13 @@ fn main() {
             .flat_map(|v| input.map_range(i, v))
             .collect::<Vec<_>>();
     }
-    println!("{}", rng.into_iter().map(|v| *v.start()).min().unwrap());
+    info!(result = rng.into_iter().map(|v| *v.start()).min().unwrap());
+    Ok(())
+}
+
+#[cfg(test)]
+#[test]
+fn part2() -> miette::Result<()> {
+    tracing_subscriber::fmt().compact().init();
+    process()
 }

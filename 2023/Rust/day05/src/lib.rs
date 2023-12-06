@@ -1,5 +1,10 @@
 use std::ops::RangeInclusive;
 
+pub const INPUT: &str = include_str!("../input.txt");
+
+pub mod part1;
+pub mod part2;
+
 pub const SAMPLE: &str = "seeds: 79 14 55 13
 
 seed-to-soil map:
@@ -126,6 +131,7 @@ impl RangeMap {
     }
 }
 
+#[tracing::instrument(name = "parse", skip(input))]
 pub fn parse_input(input: &str) -> (Vec<usize>, Maps) {
     let seeds = input.lines().next().unwrap()[6..]
         .trim()
