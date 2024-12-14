@@ -1,0 +1,63 @@
+Um die Variablen aa und bb für eine gegebene Zahl nn und Konstanten x1​ und x2​ so zu bestimmen, dass die Gleichung
+n=a⋅x1+b⋅x2
+
+erfüllt ist, handelt es sich um ein lineares Diophantisches Gleichungssystem. Es gibt verschiedene Methoden, um aa und bb zu finden. Die grundlegende Herangehensweise könnte in zwei Hauptfällen erfolgen:
+1. Fall 1: Euklidischer Algorithmus
+
+Wenn die Zahlen x1​ und x2​ teilerfremd sind, d. h. ggT(x1,x2)=1ggT(x1​,x2​)=1, dann hat die Gleichung immer eine Lösung. Der euklidische Algorithmus kann verwendet werden, um die Werte von aa und bb zu finden.
+
+Hier ist die Vorgehensweise:
+Schritt 1: Euklidischer Algorithmus
+
+Berechne den größten gemeinsamen Teiler (ggT) von x1​ und x2​ mittels des euklidischen Algorithmus.
+Schritt 2: Erweiterter Euklidischer Algorithmus
+
+Verwende den erweiterten euklidischen Algorithmus, um die sogenannten Bezifferungen zu berechnen. Der erweiterte Algorithmus gibt dir eine Darstellung des ggT als Linearkombination von x1​ und x2​:
+ggT(x1,x2)=a′⋅x1+b′⋅x2
+ggT(x1​,x2​)=a′⋅x1​+b′⋅x2​
+
+Wenn ggT(x1,x2)=1ggT(x1​,x2​)=1, dann gibt es ganzzahlige Lösungen a′a′ und b′b′, die die Gleichung 1=a′⋅x1+b′⋅x21=a′⋅x1​+b′⋅x2​ erfüllen.
+Schritt 3: Skalierung
+
+Wenn du nun eine Gleichung der Form n=a⋅x1+b⋅x2n=a⋅x1​+b⋅x2​ hast, kannst du die Lösung des erweiterten Algorithmus für n=1n=1 auf nn skalieren:
+a=a′⋅n,b=b′⋅n
+a=a′⋅n,b=b′⋅n
+2. Fall 2: Kein ggT = 1
+
+Wenn der ggT von x1​ und x2​ größer als 1 ist, dann muss nn ein Vielfaches dieses ggT sein, damit eine Lösung existiert. In diesem Fall kannst du eine ähnliche Vorgehensweise anwenden, aber es muss darauf geachtet werden, dass nn durch den ggT teilbar ist.
+
+Wenn ggT(x1,x2)=dggT(x1​,x2​)=d, dann muss nn auch durch dd teilbar sein, d. h. n=d⋅mn=d⋅m, wobei mm eine ganze Zahl ist. Du kannst dann den erweiterten euklidischen Algorithmus für x1/dx1​/d und x2/dx2​/d anwenden und die Lösungen dann auf den Wert nn skalieren.
+Beispiel
+
+Nehmen wir an, du hast n=7n=7, x1=3x1​=3, und x2=5x2​=5.
+
+    Berechne den ggT von 3 und 5:
+    ggT(3,5)=1
+    ggT(3,5)=1
+
+    Da der ggT 1 ist, gibt es Lösungen.
+
+    Erweiterter Euklidischer Algorithmus: Wir suchen a′a′ und b′b′, so dass
+    1=a′⋅3+b′⋅5
+    1=a′⋅3+b′⋅5
+
+    Durch Anwendung des erweiterten Euklidischen Algorithmus erhalten wir:
+    1=2⋅3−1⋅5
+    1=2⋅3−1⋅5
+
+    Das bedeutet, dass a′=2a′=2 und b′=−1b′=−1.
+
+    Skalierung auf n=7n=7: Da wir n=7n=7 wollen, skalieren wir:
+    a=2⋅7=14,b=−1⋅7=−7
+    a=2⋅7=14,b=−1⋅7=−7
+
+    Die Lösung ist also:
+    7=14⋅3+(−7)⋅5
+    7=14⋅3+(−7)⋅5
+
+Fazit
+
+    Wenn der ggT von x1​ und x2​ 1 ist, gibt es immer eine Lösung, und du kannst den erweiterten Euklidischen Algorithmus verwenden, um aa und bb zu bestimmen.
+    Wenn der ggT größer als 1 ist, muss nn durch diesen ggT teilbar sein, damit eine Lösung existiert. In diesem Fall kannst du ebenfalls den erweiterten Euklidischen Algorithmus anwenden und skalieren.
+
+Hoffentlich hilft diese Erklärung weiter! Wenn du noch weitere Fragen hast, lass es mich wissen.
