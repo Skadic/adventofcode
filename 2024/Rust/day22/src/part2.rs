@@ -1,39 +1,42 @@
-use std::{collections::HashMap, iter::zip};
+use std::iter::zip;
 
 use tracing::info;
 
 use crate::{next_secret_number, parse_input, INPUT};
 
-#[tracing::instrument(name = "part2", parent=None)]
+//#[tracing::instrument(name = "part2", parent=None)]
 pub fn process() -> miette::Result<()> {
     let input = parse_input(INPUT);
 
-    let mut scores = HashMap::new();
+    let mut scores = vec![0; 150_000];
     let (bananas, changes) = calculate_bananas(&input);
 
     for (bananas, changes) in zip(bananas, changes) {
-        let mut local_scores = HashMap::new();
+        let mut local_scores = vec![None; 150_000];
 
         for (window, score) in zip(changes.windows(4), bananas.into_iter().skip(3)) {
-            let window: [isize; 4] = window.try_into().unwrap();
-            local_scores.entry(window).or_insert(score);
+            let window: [i8; 4] = window.try_into().unwrap();
+            let idx = make_index(window);
+            if local_scores[idx].is_none() {
+                local_scores[idx] = Some(score);
+            }
         }
 
-        for (window, score) in local_scores.into_iter() {
-            let entry = scores.entry(window).or_insert(0);
-            *entry += score;
+        for (idx, score) in local_scores.into_iter().enumerate() {
+            if let Some(score) = score {
+                scores[idx] += score as usize;
+            }
         }
     }
 
-
-    let result = scores.into_iter().max_by_key(|(_, score)| *score).unwrap();
+    let result = scores.into_iter().max().unwrap();
 
     info!(?result);
 
     Ok(())
 }
 
-fn calculate_bananas(input: &[usize]) -> (Vec<Vec<isize>>, Vec<Vec<isize>>) {
+fn calculate_bananas(input: &[usize]) -> (Vec<Vec<i8>>, Vec<Vec<i8>>) {
     let mut bananas = Vec::new();
     let mut changes = Vec::new();
 
@@ -44,8 +47,8 @@ fn calculate_bananas(input: &[usize]) -> (Vec<Vec<isize>>, Vec<Vec<isize>>) {
         for _ in 0..2000 {
             let prev = current;
             current = next_secret_number(current);
-            buyer_bananas.push(current as isize % 10);
-            buyer_changes.push(current as isize % 10 - prev as isize % 10);
+            buyer_bananas.push((current % 10) as i8);
+            buyer_changes.push((current % 10) as i8 - (prev % 10) as i8);
 
             // println!("{}: {} - {:?}", current, buyer_bananas.last().unwrap(), &buyer_changes[buyer_changes.len().saturating_sub(4)..])
         }
@@ -54,6 +57,13 @@ fn calculate_bananas(input: &[usize]) -> (Vec<Vec<isize>>, Vec<Vec<isize>>) {
     }
 
     (bananas, changes)
+}
+
+fn make_index(window: [i8; 4]) -> usize {
+    window
+        .iter()
+        .map(|r| *r + 9)
+        .fold(0, |acc, i| acc * 18 + i as usize)
 }
 
 #[cfg(test)]
